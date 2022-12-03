@@ -1,0 +1,28 @@
+{
+  "name": "qrcode-tool",
+  "version": "1.0.0",
+  "author": {
+    "name": "Frost-ZX"
+  },
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --mode development",
+    "preview": "vue-cli-service serve --mode production",
+    "build": "vue-cli-service build --mode production"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.0.96",
+    "core-js": "^3.8.3",
+    "qs": "^6.11.0",
+    "ress": "^5.0.2",
+    "vue": "^3.2.13"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.5",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "less": "^4.0.0",
+    "less-loader": "^8.0.0",
+    "webpack": "^5.75.0"
+  }
+}
