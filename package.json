@@ -12,9 +12,12 @@
   },
   "dependencies": {
     "@mdi/font": "^7.0.96",
+    "awesome-qr": "2.1.5-rc.0",
     "core-js": "^3.8.3",
+    "jsqr": "^1.4.0",
     "qs": "^6.11.0",
     "ress": "^5.0.2",
+    "tdesign-vue-next": "^0.25.0",
     "vue": "^3.2.13"
   },
   "devDependencies": {
