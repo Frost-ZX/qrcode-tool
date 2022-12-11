@@ -181,13 +181,14 @@ function initData() {
 /** 复制二维码地址 */
 function copyCodeURL() {
 
-  // https://{host}:{port}
-  const origin = location.origin;
+  
+  const origin = location.origin; // 协议 + 域名
+  const path = location.pathname; // 访问路径
   const queries = toURLQueries({
     readonly: '1',
     text: state.text,
   });
-  const text = `${origin}/?${queries}`;
+  const text = `${origin}${path}?${queries}`;
 
   navigator.clipboard.writeText(text).then(() => {
     $message('success', { content: '复制成功' });
