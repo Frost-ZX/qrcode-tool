@@ -47,12 +47,16 @@ html {
 }
 
 #app-loading {
-  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 #app {
   display: flex;
   flex-direction: column;
+  position: relative;
   font-size: 1rem;
 
   > div {
