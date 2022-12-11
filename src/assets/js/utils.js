@@ -1,5 +1,22 @@
 import { AwesomeQR, QRErrorCorrectLevel } from 'awesome-qr';
-import { parse as parseQueries } from 'qs';
+import { parse as qsParse, stringify as qsStringify } from 'qs';
+import { MessagePlugin } from 'tdesign-vue-next';
+
+/** @typedef { import('tdesign-vue-next').MessageOptions } MessageOptions */
+/** @typedef { import('tdesign-vue-next').MessageThemeList } MessageType */
+
+/**
+ * @description 消息提示
+ * @param {MessageType}    type
+ * @param {MessageOptions} opts
+ */
+export function $message(type = 'info', opts = {}) {
+  return MessagePlugin(type, {
+    content: '',
+    duration: 2000,
+    ...opts,
+  });
+}
 
 /**
  * @description Base64 转 Blob
@@ -237,20 +254,31 @@ export function getColorRGBA(colorStr) {
 }
 
 /**
+ * @typedef  {object} URLQueries
+ * @property {'0'|'1'} [readonly]
+ * @property {string}  [text]
+ */
+
+/**
  * @description 获取当前页面 URL 的查询参数
- * @returns {{
- *   readonly: '0'|'1';
- *   text: string;
- * }}
+ * @returns {URLQueries}
  */
 export function getURLQueries() {
-
   const queries = location.search;
-  const parsed = parseQueries(queries, {
+  const parsed = qsParse(queries, {
     charset: 'utf-8',
     ignoreQueryPrefix: true,
   });
-
   return parsed;
+}
 
+/**
+ * @description 将对象转换为 URL 查询参数
+ * @param {URLQueries} obj
+ */
+export function toURLQueries(obj = {}) {
+  return qsStringify(obj, {
+    charset: 'utf-8',
+    addQueryPrefix: false,
+  });
 }

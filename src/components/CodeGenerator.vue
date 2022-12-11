@@ -10,17 +10,21 @@
       :header-bordered="true"
       :shadow="true"
     >
-      <template #actions>
-        <t-button
-          theme="primary"
-          variant="text"
-          @click="generateCode"
-        >生成 / 刷新</t-button>
-        <t-button
-          theme="primary"
-          variant="text"
-          disabled
-        >复制地址</t-button>
+      <template v-if="isNormal" #actions>
+        <t-tooltip content="生成二维码">
+          <t-button
+            theme="primary"
+            variant="text"
+            @click="generateCode"
+          >生成 / 刷新</t-button>
+        </t-tooltip>
+        <t-tooltip content="复制二维码预览地址">
+          <t-button
+            theme="primary"
+            variant="text"
+            @click="copyCodeURL"
+          >复制地址</t-button>
+        </t-tooltip>
       </template>
       <div
         class="code-image-wrapper"
@@ -37,6 +41,7 @@
 
     <!-- 内容设置 -->
     <t-card
+      v-if="isNormal"
       class="content-card set-text"
       title="二维码内容"
       :bordered="false"
@@ -48,6 +53,7 @@
 
     <!-- 颜色设置 -->
     <t-card
+      v-if="isNormal"
       class="content-card set-color"
       title="二维码颜色"
       :bordered="false"
@@ -76,6 +82,7 @@
 
     <!-- 大小设置 -->
     <t-card
+      v-if="isNormal"
       class="content-card set-size"
       title="二维码大小"
       :bordered="false"
@@ -113,15 +120,18 @@
 
 <script setup>
 import {
+  computed,
   shallowReactive,
   onBeforeMount,
   onMounted,
 } from 'vue';
 
 import {
+  $message,
   dataURLtoBlob,
   generateQRCode,
   getURLQueries,
+  toURLQueries,
 } from '@/assets/js/utils';
 
 const props = defineProps({
@@ -156,11 +166,35 @@ const state = shallowReactive({
 
 });
 
+/** 是否为常规模式 */
+const isNormal = computed(() => {
+  return !state.readonly;
+});
+
 /** 初始化数据 */
 function initData() {
   const { readonly = '0', text = '' } = getURLQueries();
   state.readonly = (readonly === '1');
   state.text = text;
+}
+
+/** 复制二维码地址 */
+function copyCodeURL() {
+
+  // https://{host}:{port}
+  const origin = location.origin;
+  const queries = toURLQueries({
+    readonly: '1',
+    text: state.text,
+  });
+  const text = `${origin}/?${queries}`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    $message('success', { content: '复制成功' });
+  }).catch(() => {
+    $message('error', { content: '复制失败，可能是没有权限' });
+  });
+
 }
 
 /** 生成二维码 */

@@ -9,7 +9,9 @@ import {
   ColorPickerPanel,
   Input,
   InputNumber,
+  Popup,
   Select,
+  Tooltip,
 } from 'tdesign-vue-next';
 
 // CSS
@@ -23,8 +25,10 @@ export default function init(app) {
   return app.use(Button)
     .use(Input)
     .use(InputNumber)
+    .use(Popup)
     .use(Select)
     .use(Card)
     .use(ColorPicker)
-    .use(ColorPickerPanel);
+    .use(ColorPickerPanel)
+    .use(Tooltip);
 }
