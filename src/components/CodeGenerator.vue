@@ -37,6 +37,10 @@
           :src="state.codeURL"
         />
       </div>
+      <div
+        v-show="state.readonly"
+        class="code-tips"
+      >若您在移动端访问，可尝试长按识别。</div>
     </t-card>
 
     <!-- 内容设置 -->
@@ -181,7 +185,7 @@ function initData() {
 /** 复制二维码地址 */
 function copyCodeURL() {
 
-  
+
   const origin = location.origin; // 协议 + 域名
   const path = location.pathname; // 访问路径
   const queries = toURLQueries({
@@ -235,13 +239,14 @@ onMounted(() => {
 :deep(.code-result) {
   .t-card__body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    text-align: center;
   }
 
   .code-image-wrapper {
     width: 100%;
     line-height: 1;
-    text-align: center;
   }
 
   .code-image {
@@ -250,6 +255,10 @@ onMounted(() => {
     max-height: 16rem;
     object-fit: contain;
     object-position: center;
+  }
+
+  .code-tips {
+    color: #505050;
   }
 }
 
