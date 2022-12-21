@@ -11,7 +11,9 @@ import {
   InputNumber,
   Popup,
   Select,
+  Textarea,
   Tooltip,
+  Upload,
 } from 'tdesign-vue-next';
 
 // CSS
@@ -25,10 +27,12 @@ export default function init(app) {
   return app.use(Button)
     .use(Input)
     .use(InputNumber)
+    .use(Textarea)
     .use(Popup)
     .use(Select)
     .use(Card)
     .use(ColorPicker)
     .use(ColorPickerPanel)
-    .use(Tooltip);
+    .use(Tooltip)
+    .use(Upload);
 }

@@ -86,6 +86,10 @@ onMounted(() => {
   .content-card:not(:first-child) {
     margin-top: 1rem;
   }
+
+  .t-card__body {
+    padding: 1rem;
+  }
 }
 
 .tab-item {
