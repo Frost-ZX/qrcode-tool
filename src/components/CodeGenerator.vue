@@ -52,7 +52,7 @@
       :header-bordered="true"
       :shadow="true"
     >
-      <t-input v-model="state.text" />
+      <t-textarea v-model="state.text" />
     </t-card>
 
     <!-- 颜色设置 -->
