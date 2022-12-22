@@ -7,6 +7,7 @@ import {
   Card,
   ColorPicker,
   ColorPickerPanel,
+  ConfigProvider,
   Input,
   InputNumber,
   Popup,
@@ -24,7 +25,8 @@ import './index.css';
 export default function init(app) {
   // 注意：
   // 将基础组件放在前面，防止 CSS 优先级异常。
-  return app.use(Button)
+  return app.use(ConfigProvider)
+    .use(Button)
     .use(Input)
     .use(InputNumber)
     .use(Textarea)

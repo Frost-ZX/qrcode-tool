@@ -37,3 +37,4 @@ pnpm run build
 - [Material Design Icons](https://materialdesignicons.com/)
 - [qs](https://github.com/ljharb/qs)
 - [ress](https://github.com/filipelinhares/ress)
+- [Vue I18n](https://vue-i18n.intlify.dev/)

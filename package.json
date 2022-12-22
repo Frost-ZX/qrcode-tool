@@ -1,6 +1,6 @@
 {
   "name": "qrcode-tool",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": {
     "name": "Frost-ZX"
   },
@@ -18,7 +18,8 @@
     "qs": "^6.11.0",
     "ress": "^5.0.2",
     "tdesign-vue-next": "^0.25.0",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue-i18n": "^9.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",

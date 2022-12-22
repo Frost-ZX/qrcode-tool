@@ -5,10 +5,10 @@
     <!-- 选择图片 -->
     <t-card
       class="content-card code-picker"
-      title="选择图片"
       :bordered="false"
       :header-bordered="true"
       :shadow="true"
+      :title="$t('codeImagePick')"
     >
       <t-upload
         v-model="state.files"
@@ -20,17 +20,17 @@
         draggable
       />
       <div class="code-tips">
-        <span>支持复制二维码图片后直接在此处粘贴（Ctrl + V）进行解析。</span>
+        <span>{{ $t('codeImageTips') }}</span>
       </div>
     </t-card>
 
     <!-- 识别结果 -->
     <t-card
       class="content-card code-result"
-      title="识别结果"
       :bordered="false"
       :header-bordered="true"
       :shadow="true"
+      :title="$t('codeImageResult')"
     >
       <t-textarea v-model="state.text" readonly />
     </t-card>
@@ -42,10 +42,13 @@
 import jsQR from 'jsqr';
 
 import { shallowReactive, onBeforeUnmount, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { $message } from '@/assets/js/utils';
 
 /** @typedef { import('tdesign-vue-next').RequestMethodResponse } UploadRes */
 /** @typedef { import('tdesign-vue-next').UploadFile } UploadFile */
+
+const $t = useI18n().t;
 
 const state = shallowReactive({
 

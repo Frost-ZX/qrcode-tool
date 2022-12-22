@@ -5,25 +5,27 @@
     <!-- 生成结果 -->
     <t-card
       class="content-card code-result"
-      title="二维码预览"
       :bordered="false"
       :header-bordered="true"
       :shadow="true"
+      :title="$t('codePreview')"
     >
       <template v-if="isNormal" #actions>
-        <t-tooltip content="生成二维码">
+        <!-- 生成二维码 -->
+        <t-tooltip :content="$t('btnGenerateDesc')">
           <t-button
             theme="primary"
             variant="text"
             @click="generateCode"
-          >生成 / 刷新</t-button>
+          >{{ $t('btnGenerate') }}</t-button>
         </t-tooltip>
-        <t-tooltip content="复制二维码预览地址">
+        <!-- 复制地址 -->
+        <t-tooltip :content="$t('btnCopyDesc')">
           <t-button
             theme="primary"
             variant="text"
             @click="copyCodeURL"
-          >复制地址</t-button>
+          >{{ $t('btnCopy') }}</t-button>
         </t-tooltip>
       </template>
       <div
@@ -32,25 +34,25 @@
       >
         <img
           v-if="state.codeURL"
-          alt="二维码"
           class="code-image"
+          :alt="$t('qrcode')"
           :src="state.codeURL"
         />
       </div>
       <div
         v-show="state.readonly"
         class="code-tips"
-      >若您在移动端访问，可尝试长按识别。</div>
+      >{{ $t('codeTips') }}</div>
     </t-card>
 
     <!-- 内容设置 -->
     <t-card
       v-if="isNormal"
       class="content-card set-text"
-      title="二维码内容"
       :bordered="false"
       :header-bordered="true"
       :shadow="true"
+      :title="$t('codeContent')"
     >
       <t-textarea v-model="state.text" />
     </t-card>
@@ -59,13 +61,14 @@
     <t-card
       v-if="isNormal"
       class="content-card set-color"
-      title="二维码颜色"
       :bordered="false"
       :header-bordered="true"
       :shadow="true"
+      :title="$t('codeColor')"
     >
+      <!-- 前景颜色 -->
       <div class="config-item">
-        <span class="label">前景色：</span>
+        <span class="label">{{ $t('setColorForeground') }}</span>
         <t-color-picker
           v-model="state.colorForeground"
           :color-modes="['monochrome']"
@@ -73,8 +76,9 @@
           format="HEX"
         />
       </div>
+      <!-- 背景颜色 -->
       <div class="config-item">
-        <span class="label">背景色：</span>
+        <span class="label">{{ $t('setColorBackground') }}</span>
         <t-color-picker
           v-model="state.colorBackground"
           :color-modes="['monochrome']"
@@ -88,33 +92,35 @@
     <t-card
       v-if="isNormal"
       class="content-card set-size"
-      title="二维码大小"
       :bordered="false"
       :header-bordered="true"
       :shadow="true"
+      :title="$t('codeSize')"
     >
+      <!-- 尺寸 -->
       <div class="config-item">
         <t-input-number
           v-model="state.size"
-          label="尺寸："
           theme="column"
           :allow-input-over-limit="false"
           :decimal-places="0"
           :min="128"
           :max="1024"
           :step="1"
+          :label="$t('setSize')"
         />
       </div>
+      <!-- 边距 -->
       <div class="config-item">
         <t-input-number
           v-model="state.margin"
-          label="边距："
           theme="column"
           :allow-input-over-limit="false"
           :decimal-places="0"
           :min="0"
           :max="100"
           :step="1"
+          :label="$t('setMargin')"
         />
       </div>
     </t-card>
@@ -131,12 +137,18 @@ import {
 } from 'vue';
 
 import {
+  useI18n,
+} from 'vue-i18n';
+
+import {
   $message,
   dataURLtoBlob,
   generateQRCode,
   getURLQueries,
   toURLQueries,
 } from '@/assets/js/utils';
+
+const $t = useI18n().t;
 
 const props = defineProps({
 
@@ -253,6 +265,7 @@ onMounted(() => {
     width: auto;
     height: calc(var(--code-size, 256) * 1px);
     max-height: 16rem;
+    max-width: 100%;
     object-fit: contain;
     object-position: center;
   }
