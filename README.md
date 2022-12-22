@@ -1,6 +1,34 @@
-# QRCode Tool / 二维码生成和解析
+# QRCode Tool
 
-## 使用的框架和库
+QRCode Generator and Reader / 二维码生成和解析工具
+
+## 相关命令（Commands）
+
+初始化 / Initialization
+
+```text
+pnpm install
+```
+
+启动开发服务器（开发模式）/ Start devServer (Development Mode)
+
+```text
+pnpm run serve
+```
+
+启动开发服务器（生产模式）/ Start devServer (Production Mode)
+
+```text
+pnpm run preview
+```
+
+打包 / Build
+
+```text
+pnpm run build
+```
+
+## 使用的框架和库（Frameworks and Libraries）
 
 - [Vue 3](https://cn.vuejs.org/)
 - [TDesign Vue Next](https://tdesign.tencent.com/vue-next/)
