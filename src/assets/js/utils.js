@@ -1,3 +1,5 @@
+import jsQR from 'jsqr';
+
 import { AwesomeQR, QRErrorCorrectLevel } from 'awesome-qr';
 import { parse as qsParse, stringify as qsStringify } from 'qs';
 import { MessagePlugin } from 'tdesign-vue-next';
@@ -68,6 +70,13 @@ export function dataURLtoImage(dataURL) {
 }
 
 /**
+ * @typedef QRCodeGenResult
+ * @property {Error}   error
+ * @property {string}  result
+ * @property {boolean} success
+ */
+
+/**
  * @description 生成二维码
  * @param {object} opts
  * @param {string} opts.colorBackground
@@ -75,11 +84,7 @@ export function dataURLtoImage(dataURL) {
  * @param {number} opts.margin
  * @param {number} opts.size
  * @param {string} opts.text
- * @returns {Promise<{
- *   error: Error;
- *   result: string;
- *   success: boolean;
- * }>}
+ * @returns {Promise<QRCodeGenResult>}
  */
 export async function generateQRCode(opts = {}) {
 
@@ -222,6 +227,81 @@ export async function generateQRCode(opts = {}) {
 }
 
 /**
+ * @typedef QRCodeParseResult
+ * @property {boolean} error
+ * @property {boolean} success
+ * @property {string}  text
+ */
+
+/**
+ * @description 解析图片中的二维码
+ * @param   {string} url 图片地址
+ * @returns {Promise<QRCodeParseResult>}
+ */
+export function parseQRCode(url = '') {
+  return new Promise((resolve) => {
+
+    const image = new Image();
+
+    // 图片加载失败
+    image.onerror = function () {
+      resolve({
+        error: true,
+        success: false,
+        text: false,
+      });
+    };
+
+    // 图片加载成功
+    image.onload = function () {
+
+      const imageData = getImageData(image, 1);
+      const codeData = imageData ? jsQR(
+        imageData.data,
+        imageData.width,
+        imageData.height
+      ) : null;
+
+      if (codeData) {
+        resolve({
+          error: false,
+          success: true,
+          text: codeData.data,
+        });
+      } else {
+
+        const imageDataAlt = getImageData(image, 0.5);
+        const codeDataAlt = imageDataAlt ? jsQR(
+          imageDataAlt.data,
+          imageDataAlt.width,
+          imageDataAlt.height
+        ) : null;
+
+        if (codeDataAlt) {
+          resolve({
+            error: false,
+            success: true,
+            text: codeDataAlt.data,
+          });
+        } else {
+          resolve({
+            error: false,
+            success: false,
+            text: '',
+          });
+        }
+
+      }
+
+    };
+
+    // 开始加载图片
+    image.src = url;
+
+  });
+}
+
+/**
  * @description 颜色字符串转 RGBA
  * @param {string} colorStr
  */
@@ -249,6 +329,48 @@ export function getColorRGBA(colorStr) {
     console.error('转换失败：');
     console.error(error);
     return [0, 0, 0, 0];
+  }
+
+}
+
+/**
+ * @description 获取图片的 `ImageData`
+ * @param {HTMLImageElement} image
+ * @param {number}           scale
+ */
+export function getImageData(image, scale = 1) {
+
+  let isValid = (
+    image &&
+    image instanceof HTMLImageElement &&
+    typeof scale === 'number' &&
+    scale > 0 &&
+    scale <= 1
+  );
+
+  if (isValid) {
+
+    let canvas = document.createElement('canvas');
+    let ctx = null;
+    let w = Math.round(image.naturalWidth * scale);
+    let h = Math.round(image.naturalHeight * scale);
+
+    canvas.width = w;
+    canvas.height = h;
+    ctx = canvas.getContext('2d');
+    ctx.drawImage(image, 0, 0, w, h);
+
+    try {
+      return ctx.getImageData(0, 0, w, h);
+    } catch (error) {
+      console.error('获取失败：');
+      console.error(error);
+      return null;
+    }
+
+  } else {
+    console.error('获取失败：参数错误');
+    return null;
   }
 
 }

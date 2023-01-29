@@ -39,11 +39,9 @@
 </template>
 
 <script setup>
-import jsQR from 'jsqr';
-
 import { shallowReactive, onBeforeUnmount, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { $message } from '@/assets/js/utils';
+import { $message, parseQRCode } from '@/assets/js/utils';
 
 /** @typedef { import('tdesign-vue-next').RequestMethodResponse } UploadRes */
 /** @typedef { import('tdesign-vue-next').UploadFile } UploadFile */
@@ -124,44 +122,16 @@ function handleSelImage(fileInfo) {
   state.imageURL = url;
 
   // 解析二维码
-  parseCode(url);
+  parseQRCode(url).then((res) => {
 
-  return Promise.resolve({
-    status: 'success',
-    response: { url },
-  });
+    const { success, text } = res;
 
-}
-
-/**
- * @description 解析图片中的二维码
- * @param {string} url 图片地址
- */
-function parseCode(url = '') {
-
-  let canvas = document.createElement('canvas');
-  let ctx = null;
-  let image = new Image();
-
-  image.onload = function () {
-
-    const w = image.naturalWidth;
-    const h = image.naturalHeight;
-
-    canvas.width = w;
-    canvas.height = h;
-    ctx = canvas.getContext('2d');
-    ctx.drawImage(image, 0, 0);
-
-    const imageData = ctx.getImageData(0, 0, w, h);
-    const codeData = jsQR(imageData.data, w, h);
-
-    if (codeData) {
+    if (success) {
       $message('success', {
         content: '解析成功',
         duration: 2000,
       });
-      state.text = codeData.data;
+      state.text = text;
     } else {
       $message('warning', {
         content: '未在图片中识别到二维码',
@@ -170,9 +140,12 @@ function parseCode(url = '') {
       state.text = '';
     }
 
-  };
+  });
 
-  image.src = url;
+  return Promise.resolve({
+    status: 'success',
+    response: { url },
+  });
 
 }
 
