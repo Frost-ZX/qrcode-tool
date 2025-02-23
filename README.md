@@ -1,5 +1,7 @@
 # QRCode Tool
 
+> 停止维护，功能已迁移至 [frost-navigation](https://github.com/Frost-ZX/frost-navigation)。
+
 QRCode Generator and Reader / 二维码生成和解析工具
 
 ## 相关命令（Commands）
